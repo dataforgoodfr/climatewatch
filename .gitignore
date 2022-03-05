@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+data/
+notebooks/cardiffnlp/
+notebooks/cardiffnlp2/
+notebooks/old/
+
+
 # Distribution / packaging
 .Python
 build/

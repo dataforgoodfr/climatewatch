@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "climatewatch"
+version = "0.1.0"
+description = "Open source tool to study public response to climate change"
+authors = ["Theo Alves Da Costa <theo.alves.da.costa@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.10"
+snscrape = {git = "https://github.com/JustAnotherArchivist/snscrape.git"}
+vaderSentiment = "^3.3.2"
+rubrix = {extras = ["server"], version = "^0.5.0"}
+jupyter = "^1.0.0"
+numpy = "^1.21.2"
+pandas = "^1.3.4"
+matplotlib = "^3.4.3"
+transformers = "^4.11.3"
+plotly = "4.14.2"
+bertopic = {extras = ["visualization"], version = "^0.9.3"}
+flashtext = "^2.7"
+emoji = "^1.6.1"
+codecarbon = "^1.2.0"
+langdetect = "^1.0.9"
+tqdm = "^4.62.3"
+snakeviz = "^2.1.1"
+tensorflow = "^2.7.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
