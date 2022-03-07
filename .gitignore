@@ -6,7 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
-data/
+data/IPCC/
+data/COP26/
 notebooks/cardiffnlp/
 notebooks/cardiffnlp2/
 notebooks/old/

@@ -3,6 +3,8 @@ import json
 import re
 import pandas as pd
 from flashtext import KeywordProcessor
+from codecarbon import EmissionsTracker
+
 
 def scrape_twitter(hashtag,max_results = 10000,folder = "../data/",start_date = None,end_date = None,show = True):
     """
@@ -34,25 +36,6 @@ def scrape_twitter(hashtag,max_results = 10000,folder = "../data/",start_date = 
     else:
         print(f"... Running extraction with {cmd}")
         os.system(cmd)
-
-
-def open_jsonl_data(filepath,encoding = "latin1"):
-
-    data = []
-    with open(filepath,"r",encoding = encoding) as f:
-        for line in f:
-            data.append(json.loads(line.strip()))
-    
-    
-    return pd.DataFrame(data)
-
-def read_json(filepath):
-    return json.loads(open(filepath,"r").read())
-
-
-def save_json(d,filepath):
-    with open(filepath,"w") as file:
-        file.write(json.dumps(d))
 
 
 
@@ -98,3 +81,19 @@ def search_keywords(keywords,text):
 def search_keywords_in_df(keywords,df,column):
     return df.loc[df[column].map(lambda x : search_keywords(keywords,x))]
 
+def read_json(filepath):
+    return json.loads(open(filepath,"r").read())
+
+
+def save_json(d,filepath):
+    with open(filepath,"w") as file:
+        file.write(json.dumps(d))
+
+class CodeCarbon:
+    def __enter__(self):
+        self.tracker = EmissionsTracker()
+        self.tracker.start()
+        print("[INFO] Measuring carbon emissions with CodeCarbon")
+    
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        self.tracker.stop()
