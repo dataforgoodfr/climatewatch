@@ -7,28 +7,25 @@ from IPython.display import display,Markdown,HTML
 import requests
 import json
 
-from .nlp import VaderSentimentClassifier
-from .nlp import MetaTweetClassifier,AVAILABLE_TASKS
+from .nlp.nlp import VaderSentimentClassifier
+from .nlp.nlp import MetaTweetClassifier,AVAILABLE_TASKS
 from .utils import clean_tweet
 
 PREDICTION_COLS = ["climate","emotions","irony","sentiment"] 
 
 
-def process_raw_data(raw_data,only_cop26hashtag = False):
+def process_raw_data(raw_data):
     # Drop unused column and extract username from metadata
     # Remove all network and personal information
     data = (
         raw_data
         .assign(username = lambda x : x["user"].map(lambda y : y["username"]))
-        .drop(columns = ["_type","retweetedTweet","quotedTweet","renderedContent","source","sourceUrl","sourceLabel","user","tcooutlinks","media","retweetedTweet","inReplyToTweetId","inReplyToUser","mentionedUsers","coordinates","place","cashtags"])
+        # .drop(columns = ["_type","retweetedTweet","quotedTweet","renderedContent","source","sourceUrl","sourceLabel","user","tcooutlinks","media","retweetedTweet","inReplyToTweetId","inReplyToUser","mentionedUsers","coordinates","place","cashtags"])
+        .drop(columns = ["source","sourceUrl","sourceLabel"])
     )
 
-    if only_cop26hashtag:
-        # Filter on COP26 hashtag
-        data = data.loc[data["hashtags"].map(lambda y : ("COP26" in y) if y is not None else False)]
-
     # Add clean text
-    data["clean_bertopic"] = data["content"].map(lambda x : clean_tweet(x,bertopic = True))
+    data["clean_text"] = data["content"].map(lambda x : clean_tweet(x,bertopic = True))
     data["clean_sentiment"] = data["content"].map(lambda x : clean_tweet(x,bertopic = False))
 
     # Clean other columns
@@ -51,20 +48,6 @@ def categorize_count(x):
         return "<10000"
     else:
         return ">10000"
-
-
-def read_all_datasets(end = 8,start = 1,folder = "../data"):
-    data = []
-    for i in tqdm(range(start,end+1)):
-        filepath = os.path.join(folder,f"RAWDAY{i}.json")
-        print(f"... Reading and preparing file {filepath}")
-        day_data = open_jsonl_data(filepath,encoding = "utf16")
-        day_data = process_raw_data(day_data)
-        day_data.to_pickle(os.path.join(folder,f"DATADAY{i}.pkl"))
-        data.append(day_data)
-    data = pd.concat(data,axis = 0)
-    return data
-
 
 
 def process_sentiment_vader(data):
@@ -92,7 +75,7 @@ def process_pretrained_classifiers(data,batch_size = None):
 
 
 
-def open_jsonl_data(filepath,encoding = "latin1"):
+def open_jsonl_data(filepath,encoding = "utf16"):
 
     data = []
     with open(filepath,"r",encoding = encoding) as f:

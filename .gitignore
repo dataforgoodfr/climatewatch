@@ -134,3 +134,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+data/EACOP/EACOP_stopeacop1.json
+data/EACOP/EACOP_stopeacop2.json
+data/EACOP/EACOP_supporteacop.json
+data/EACOP/EACOP_total.json
+data/EACOP/fetch_tweets.bat
+data/EACOP/full_data_TOTAL.pkl

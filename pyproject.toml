@@ -23,6 +23,8 @@ codecarbon = "^1.2.0"
 langdetect = "^1.0.9"
 snakeviz = "^2.1.1"
 wordcloud = "^1.8.1"
+streamlit = "^1.9.0"
+networkx = "^2.8.1"
 
 [tool.poetry.dev-dependencies]
 

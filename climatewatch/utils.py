@@ -3,7 +3,7 @@ import json
 import re
 import pandas as pd
 from flashtext import KeywordProcessor
-from codecarbon import EmissionsTracker
+# from codecarbon import EmissionsTracker
 
 
 def scrape_twitter(hashtag,max_results = 10000,folder = "../data/",start_date = None,end_date = None,show = True):
